@@ -1,0 +1,112 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style>
+	table,th,td {
+	border : 1px solid black;
+	border-collapse: collapse;
+	}
+	th,td {
+	padding: 5px;
+	}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=*"></script>
+</head>
+<body>
+<table id="list"></table>
+</body>
+</html>
+<script type="text/javascript">
+	var table="<tr><th>LINE</th><th>STATIONNO</th><th>STATION</th><th>X</th><th>Y</th></tr>";
+	// 百度地图API功能
+	var busline = new BMap.BusLineSearch("北京市",{
+	//renderOptions:{map:map,panel:"r-result"},
+		onGetBusListComplete: function(result){
+			//alert(result.getNumBusList());
+			if(result) {
+				for(var i = 0;i < result.getNumBusList();i++)
+				{
+					var fstLine = result.getBusListItem(i);//获取第i个公交列表
+					var lineName = fstLine.name;
+					//alert(lineName);
+					busline.getBusLine(fstLine);
+				}
+			}
+		},
+	
+		onGetBusLineComplete: function(result){
+			//alert(result.getNumBusStations());
+			if(result.getNumBusStations())
+			{
+				$.ajax({
+						type: "POST",
+						url: "../php/getLine.php",
+						data: {linename: result.name, start: result.startTime,
+								end: result.endTime, company: result.company},
+						success: function(data) {
+							var obj = JSON.parse(data);
+							//alert(obj.status); 
+							/*if(obj.status === 0)	// insert stations
+							{*/
+								for(var j = 0;j < result.getNumBusStations();j++)
+								{
+									var station = result.getBusStation(j);
+									var stationName = station.name;
+									var stationPosition = station.position;
+									//alert(result.name+' '+j+' '+stationName+' '+stationPosition.lng+' '+stationPosition.lat);
+									/*table += "<tr><td>" +result.name+"</td><td>"+(j+1)+"</td><td>"+stationName+"</td><td>"
+									+stationPosition.lng+"</td><td>"+stationPosition.lat+"</td></tr>";
+									document.getElementById("list").innerHTML = table;*/
+									$.ajax({
+									type: "POST",
+									url: "../php/getStation.php",
+									data: {linename: result.name, stationNo: j, stationname: stationName, 
+									lng: stationPosition.lng, lat: stationPosition.lat, status: obj.status},
+									success: function(data) {
+												var obj = JSON.parse(data);
+												if(obj.status != 0 && obj.status != 1)
+												{
+													alert(obj.status); 
+												}
+											},
+											error: function(xhr) {
+												alert(JSON.stringify(xhr));
+											}
+									}
+									)
+								}
+							//}
+						},
+						error: function(xhr) {
+							alert(JSON.stringify(xhr));
+						}
+					}
+				)
+			}
+		}
+	});
+	
+	function busSearch(busName){
+		busline.getBusList(busName);
+	}
+
+	function doBusSearch(i)
+	{
+		busSearch(i);
+		if(i < 1000)
+		{
+			setTimeout(function(){doBusSearch(i + 1);},4000);
+		}
+		if(i % 50 == 0)
+		{
+			alert(i);
+		}
+		if(i == 1000)
+		{
+			alert("finish");
+		}
+	}
+	doBusSearch(0);
+</script>
+<script src="jquery.min.js"></script> 
