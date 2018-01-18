@@ -5,10 +5,10 @@ $startTime = $_POST['start'];
 $endTime = $_POST['end'];
 $company = $_POST['company'];
 
-$mysql_server_name = 'localhost';
-$mysql_user_name = 'group3';
-$mysql_passwd = 'group3';
-$mysql_database = 'group3';
+$mysql_server_name = '***';
+$mysql_user_name = '***';
+$mysql_passwd = '***';
+$mysql_database = '***';
 $con = mysqli_connect($mysql_server_name, $mysql_user_name, $mysql_passwd, $mysql_database);	// connect mysql
 mysqli_query($con, 'SET NAMES utf8');
 
