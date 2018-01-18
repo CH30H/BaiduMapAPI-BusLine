@@ -3,6 +3,21 @@ Get all the information of the bus/subway line and bus/subway station in Beijing
 
 JavaScript+php+mysql+Excel+Baidu Map JavaScript API v2.0.
 
+# File
+### Data file
+    linename.xml        xml file about bus line name list
+    nightlinename.xml   xml file about night bus line name list
+    subwaylinename.xml  xml file about subway line name list
+### Result file
+    bus_line_2018_C2H5OH.csv/xlsx             csv/xlsx file of bus line information list
+    bus_line_no_order_2018_C2H5OH.sql         sql file of bus line information list(no order)
+    bus_station_2018_C2H5OH.csv/xlsx          csv/xlsx file of bus station information list
+    bus_station_no_order_2018_C2H5OH.sql      sql file of bus station information list(no order)
+    subway_line_2018_C2H5OH.csv/xlsx          csv/xlsx file of subway line information list
+    subway_line_no_order_2018_C2H5OH.sql      sql file of subway line information list(no order)
+    subway_station_2018_C2H5OH.csv/xlsx       csv/xlsx file of subway station information list
+    subway_station_no_order_2018_C2H5OH.sql   sql file of subway station information list(no order)
+    
 # Bus Search
 ## JavaScript
 ### v1.0.html-use linename.xml
